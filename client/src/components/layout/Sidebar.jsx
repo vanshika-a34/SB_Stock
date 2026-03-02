@@ -41,7 +41,7 @@ const Sidebar = () => {
 
     return (
         <aside
-            className="hidden lg:flex flex-col w-64 h-[calc(100vh-72px)] sticky top-[72px] flex-shrink-0 border-r border-[var(--color-border)] px-5 py-6 space-y-6"
+            className="hidden lg:flex flex-col w-64 h-[calc(100vh-72px)] sticky top-[72px] shrink-0 overflow-y-auto border-r border-[var(--color-border)] px-5 py-6 space-y-6"
             style={{ backgroundColor: 'rgba(11, 15, 25, 0.4)', backdropFilter: 'blur(12px)' }}
         >
             <nav className="flex flex-col flex-1 gap-1.5 mt-1">

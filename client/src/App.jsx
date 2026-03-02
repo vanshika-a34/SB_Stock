@@ -19,9 +19,9 @@ const AppLayout = () => {
   return (
     <div className="flex flex-col min-h-screen transition-colors duration-300">
       <Navbar />
-      <div className="flex flex-1 gap-4 lg:gap-6 px-4 sm:px-6 lg:px-8 py-4 lg:py-6">
+      <div className="flex flex-1 min-h-0 gap-4 lg:gap-6 px-4 sm:px-6 lg:px-8 py-4 lg:py-6">
         {user && <Sidebar />}
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 min-h-0 overflow-y-auto">
           <div className="max-w-7xl mx-auto w-full px-1 sm:px-0 pb-10">
             <AppRoutes />
           </div>

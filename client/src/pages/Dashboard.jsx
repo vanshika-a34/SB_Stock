@@ -91,30 +91,28 @@ const Dashboard = () => {
     if (portfolioLoading) return <Loader text="Loading dashboard..." />;
 
     return (
-        <div className="space-y-8 fade-in pb-10">
+        <div className="space-y-8 lg:space-y-10 fade-in pb-10">
             {/* Welcome */}
-            <header className="mb-8">
-                <h1 className="text-3xl font-black mb-2 tracking-tight text-white drop-shadow-sm">
+            <header className="space-y-2">
+                <h1 className="text-3xl lg:text-[34px] font-black tracking-tight text-white drop-shadow-sm">
                     Welcome back, <span className="gradient-text">{user?.name}</span>
                 </h1>
-                <p className="text-[var(--color-primary-light)] font-medium text-sm lg:text-base opacity-90">
+                <p className="text-[var(--color-primary-light)] font-medium text-sm lg:text-base opacity-90 max-w-2xl">
                     Here&apos;s your daily portfolio overview and market performance.
                 </p>
             </header>
 
             {/* Portfolio Summary Cards */}
-            <div className="mb-8">
-                <PortfolioSummary
-                    totalInvested={totalInvested}
-                    totalCurrentValue={totalCurrentValue}
-                    totalProfitLoss={totalProfitLoss}
-                    availableBalance={user?.virtualBalance || availableBalance}
-                />
-            </div>
+            <PortfolioSummary
+                totalInvested={totalInvested}
+                totalCurrentValue={totalCurrentValue}
+                totalProfitLoss={totalProfitLoss}
+                availableBalance={user?.virtualBalance || availableBalance}
+            />
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
                 {/* Chart */}
-                <section className="glass-card p-8 shadow-lg">
+                <section className="glass-card p-6 sm:p-7 lg:p-8 shadow-lg">
                     <h2 className="text-xl font-black mb-6 flex items-center gap-3 text-white">
                         <div className="p-2 bg-[var(--color-primary)] bg-opacity-20 rounded-lg">
                             <FiActivity className="text-[var(--color-primary)]" size={20} />
@@ -133,7 +131,7 @@ const Dashboard = () => {
                 </section>
 
                 {/* Recent Transactions */}
-                <section className="glass-card p-8 shadow-lg flex flex-col">
+                <section className="glass-card p-6 sm:p-7 lg:p-8 shadow-lg flex flex-col">
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-xl font-black flex items-center gap-3 text-white">
                             <div className="p-2 bg-[var(--color-accent)] bg-opacity-20 rounded-lg">
@@ -148,9 +146,9 @@ const Dashboard = () => {
 
                     <div className="flex-1">
                         {transactions && transactions.length > 0 ? (
-                            <div className="space-y-4">
+                            <div className="space-y-3 sm:space-y-4">
                                 {transactions.slice(0, 5).map((tx) => (
-                                    <div key={tx._id} className="flex items-center justify-between p-4 rounded-xl bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.04)] transition-colors border border-[rgba(255,255,255,0.05)]">
+                                    <div key={tx._id} className="flex items-center justify-between gap-4 p-4 rounded-xl bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.04)] transition-colors border border-[rgba(255,255,255,0.05)]">
                                         <div className="flex items-center gap-4">
                                             <div
                                                 className="w-10 h-10 rounded-xl flex items-center justify-center shadow-inner"
@@ -162,7 +160,7 @@ const Dashboard = () => {
                                                     <FiTrendingDown className="text-[var(--color-danger)]" size={18} />
                                                 )}
                                             </div>
-                                            <div>
+                                            <div className="min-w-0">
                                                 <p className="text-base font-bold text-white tracking-tight">
                                                     {tx.type === 'buy' ? 'Bought' : 'Sold'} {tx.symbol}
                                                 </p>
@@ -171,7 +169,7 @@ const Dashboard = () => {
                                                 </p>
                                             </div>
                                         </div>
-                                        <span className={`text-base font-black tracking-tight ${tx.type === 'buy' ? 'text-[var(--color-danger)]' : 'text-[var(--color-success)]'}`}>
+                                        <span className={`text-base font-black tracking-tight whitespace-nowrap ${tx.type === 'buy' ? 'text-[var(--color-danger)]' : 'text-[var(--color-success)]'}`}>
                                             {tx.type === 'buy' ? '-' : '+'}${tx.totalAmount?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                         </span>
                                     </div>
@@ -190,7 +188,7 @@ const Dashboard = () => {
 
             {/* Top Movers/Overview */}
             {stocks && stocks.length > 0 && (
-                <section className="glass-card p-8 shadow-lg">
+                <section className="glass-card p-6 sm:p-7 lg:p-8 shadow-lg">
                     <h2 className="text-xl font-black mb-6 flex items-center gap-3 text-white">
                         <div className="p-2 bg-[var(--color-success)] bg-opacity-20 rounded-lg">
                             <FiTrendingUp className="text-[var(--color-success)]" size={20} />

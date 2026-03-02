@@ -41,17 +41,19 @@ const Stocks = () => {
     };
 
     return (
-        <div className="space-y-8 fade-in pb-10">
-            <header className="mb-8">
-                <h1 className="text-3xl font-black mb-2 tracking-tight text-white drop-shadow-sm">Stock Market</h1>
-                <p className="text-[var(--color-primary-light)] font-medium text-sm lg:text-base opacity-90 max-w-xl">
+        <div className="space-y-8 lg:space-y-10 fade-in pb-10">
+            <header className="space-y-2">
+                <h1 className="text-3xl lg:text-[34px] font-black tracking-tight text-white drop-shadow-sm">
+                    Stock Market
+                </h1>
+                <p className="text-[var(--color-primary-light)] font-medium text-sm lg:text-base opacity-90 max-w-2xl">
                     Browse real-time market data and execute trades with your virtual portfolio.
                 </p>
             </header>
 
             {/* Filters */}
-            <div className="glass-card p-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mb-8 shadow-md">
-                <div className="flex flex-1 gap-4 w-full sm:w-auto">
+            <div className="glass-card p-4 sm:p-5 lg:p-6 flex flex-col lg:flex-row gap-3 sm:gap-4 items-stretch lg:items-center justify-between shadow-md">
+                <div className="flex flex-1 flex-col sm:flex-row gap-3 sm:gap-4 w-full min-w-0">
                     {/* Search */}
                     <div className="relative flex-1 max-w-md group">
                         <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors" />
@@ -69,7 +71,7 @@ const Stocks = () => {
                     <select
                         value={sector}
                         onChange={(e) => setSector(e.target.value)}
-                        className="max-w-[220px] cursor-pointer"
+                        className="sm:max-w-[220px] cursor-pointer"
                         id="sector-filter"
                     >
                         <option value="">All Sectors</option>
@@ -80,7 +82,7 @@ const Stocks = () => {
                 </div>
 
                 {/* View toggle */}
-                <div className="flex gap-2 p-1.5 rounded-xl border border-[var(--color-border)] shadow-inner" style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}>
+                <div className="flex gap-2 p-1.5 rounded-xl border border-[var(--color-border)] shadow-inner shrink-0 self-start lg:self-auto" style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}>
                     <button
                         onClick={() => setViewMode('grid')}
                         className={`p-2.5 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-white'}`}
@@ -106,7 +108,7 @@ const Stocks = () => {
                     <Loader text="Fetching market data..." />
                 </div>
             ) : viewMode === 'grid' ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                     {stocks.map((stock) => (
                         <StockCard key={stock._id} stock={stock} onTrade={handleTrade} />
                     ))}

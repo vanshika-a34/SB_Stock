@@ -17,10 +17,12 @@ const Transactions = () => {
     if (isLoading) return <Loader text="Loading transactions..." />;
 
     return (
-        <div className="space-y-8 fade-in pb-10">
-            <header className="mb-8">
-                <h1 className="text-3xl font-black mb-2 tracking-tight text-white drop-shadow-sm">Transaction History</h1>
-                <p className="text-[var(--color-primary-light)] font-medium text-sm lg:text-base opacity-90">
+        <div className="space-y-8 lg:space-y-10 fade-in pb-10">
+            <header className="space-y-2">
+                <h1 className="text-3xl lg:text-[34px] font-black tracking-tight text-white drop-shadow-sm">
+                    Transaction History
+                </h1>
+                <p className="text-[var(--color-primary-light)] font-medium text-sm lg:text-base opacity-90 max-w-2xl">
                     Review your past trades and activity ({total} total transactions)
                 </p>
             </header>
