@@ -12,16 +12,14 @@ const initialState = {
     message: '',
 };
 
-// Register user
+// Register user (do NOT auto-login after registration)
 export const register = createAsyncThunk(
     'auth/register',
     async (userData, thunkAPI) => {
         try {
             const data = await authAPI.register(userData);
-            if (data.success) {
-                localStorage.setItem('user', JSON.stringify(data.data));
-                if (data.token) localStorage.setItem('token', data.token);
-            }
+            // We intentionally do not persist user or token here.
+            // Users will be asked to login explicitly after successful signup.
             return data;
         } catch (error) {
             const message =
@@ -89,10 +87,11 @@ const authSlice = createSlice({
             .addCase(register.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(register.fulfilled, (state, action) => {
+            .addCase(register.fulfilled, (state) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.user = action.payload.data;
+                // Keep user unauthenticated after registration; they must log in.
+                state.user = null;
             })
             .addCase(register.rejected, (state, action) => {
                 state.isLoading = false;

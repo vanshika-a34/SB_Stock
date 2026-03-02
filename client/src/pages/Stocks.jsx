@@ -41,26 +41,26 @@ const Stocks = () => {
     };
 
     return (
-        <div className="space-y-6 fade-in">
-            <header>
-                <h1 className="text-2xl font-bold">Stock Market</h1>
-                <p className="text-[var(--color-text-muted)] text-sm mt-1">
-                    Browse and trade US stocks with virtual funds
+        <div className="space-y-8 fade-in pb-10">
+            <header className="mb-8">
+                <h1 className="text-3xl font-black mb-2 tracking-tight text-white drop-shadow-sm">Stock Market</h1>
+                <p className="text-[var(--color-primary-light)] font-medium text-sm lg:text-base opacity-90 max-w-xl">
+                    Browse real-time market data and execute trades with your virtual portfolio.
                 </p>
             </header>
 
             {/* Filters */}
-            <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-                <div className="flex flex-1 gap-3 w-full sm:w-auto">
+            <div className="glass-card p-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mb-8 shadow-md">
+                <div className="flex flex-1 gap-4 w-full sm:w-auto">
                     {/* Search */}
-                    <div className="relative flex-1 max-w-xs">
-                        <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" />
+                    <div className="relative flex-1 max-w-md group">
+                        <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] group-focus-within:text-[var(--color-primary)] transition-colors" />
                         <input
                             type="text"
-                            placeholder="Search stocks..."
+                            placeholder="Search by symbol or company..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="pl-10"
+                            className="pl-12 w-full"
                             id="stock-search"
                         />
                     </div>
@@ -69,7 +69,7 @@ const Stocks = () => {
                     <select
                         value={sector}
                         onChange={(e) => setSector(e.target.value)}
-                        className="max-w-[200px]"
+                        className="max-w-[220px] cursor-pointer"
                         id="sector-filter"
                     >
                         <option value="">All Sectors</option>
@@ -80,31 +80,33 @@ const Stocks = () => {
                 </div>
 
                 {/* View toggle */}
-                <div className="flex gap-1 p-1 rounded-lg" style={{ backgroundColor: 'var(--color-bg-secondary)' }}>
+                <div className="flex gap-2 p-1.5 rounded-xl border border-[var(--color-border)] shadow-inner" style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}>
                     <button
                         onClick={() => setViewMode('grid')}
-                        className={`p-2 rounded-md transition-all ${viewMode === 'grid' ? 'bg-[var(--color-primary)] text-white' : 'text-[var(--color-text-muted)]'}`}
+                        className={`p-2.5 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-white'}`}
                         title="Grid view"
                         id="grid-view-btn"
                     >
-                        <FiGrid size={16} />
+                        <FiGrid size={18} />
                     </button>
                     <button
                         onClick={() => setViewMode('table')}
-                        className={`p-2 rounded-md transition-all ${viewMode === 'table' ? 'bg-[var(--color-primary)] text-white' : 'text-[var(--color-text-muted)]'}`}
+                        className={`p-2.5 rounded-lg transition-all ${viewMode === 'table' ? 'bg-[var(--color-primary)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-white'}`}
                         title="Table view"
                         id="table-view-btn"
                     >
-                        <FiList size={16} />
+                        <FiList size={18} />
                     </button>
                 </div>
             </div>
 
             {/* Stock list */}
             {isLoading ? (
-                <Loader text="Loading stocks..." />
+                <div className="flex justify-center items-center py-20">
+                    <Loader text="Fetching market data..." />
+                </div>
             ) : viewMode === 'grid' ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {stocks.map((stock) => (
                         <StockCard key={stock._id} stock={stock} onTrade={handleTrade} />
                     ))}
@@ -114,8 +116,10 @@ const Stocks = () => {
             )}
 
             {stocks.length === 0 && !isLoading && (
-                <div className="text-center py-12">
-                    <p className="text-[var(--color-text-muted)]">No stocks found matching your search</p>
+                <div className="glass-card text-center py-16 px-4">
+                    <FiSearch className="mx-auto text-4xl mb-4 text-[var(--color-text-muted)] opacity-50" />
+                    <h3 className="text-xl font-bold mb-2">No stocks found</h3>
+                    <p className="text-[var(--color-text-muted)] max-w-sm mx-auto">Try adjusting your search criteria or switching to a different sector to find what you're looking for.</p>
                 </div>
             )}
 

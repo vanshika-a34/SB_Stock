@@ -49,7 +49,7 @@ const Dashboard = () => {
                     data: topStock.historicalData.slice(-15).map((d) => d.price),
                     borderColor: '#6366f1',
                     backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                    borderWidth: 2,
+                    borderWidth: 3,
                     pointRadius: 0,
                     tension: 0.4,
                     fill: true,
@@ -64,23 +64,26 @@ const Dashboard = () => {
         plugins: {
             legend: { display: false },
             tooltip: {
-                backgroundColor: '#1e293b',
-                titleColor: '#f1f5f9',
-                bodyColor: '#94a3b8',
-                borderColor: '#334155',
+                backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                titleColor: '#f8fafc',
+                bodyColor: '#cbd5e1',
+                borderColor: 'rgba(255,255,255,0.1)',
                 borderWidth: 1,
-                padding: 12,
-                cornerRadius: 8,
+                padding: 16,
+                cornerRadius: 12,
+                titleFont: { size: 14, weight: 'bold' },
+                bodyFont: { size: 13 },
+                displayColors: false,
             },
         },
         scales: {
             x: {
-                grid: { color: 'rgba(51, 65, 85, 0.3)' },
-                ticks: { color: '#64748b', font: { size: 10 } },
+                grid: { color: 'rgba(255, 255, 255, 0.05)', drawBorder: false },
+                ticks: { color: '#64748b', font: { size: 11, weight: '500' }, padding: 10 },
             },
             y: {
-                grid: { color: 'rgba(51, 65, 85, 0.3)' },
-                ticks: { color: '#64748b', font: { size: 10 }, callback: (v) => `$${v}` },
+                grid: { color: 'rgba(255, 255, 255, 0.05)', drawBorder: false },
+                ticks: { color: '#64748b', font: { size: 11, weight: '500' }, callback: (v) => `$${v}`, padding: 10 },
             },
         },
     };
@@ -88,102 +91,120 @@ const Dashboard = () => {
     if (portfolioLoading) return <Loader text="Loading dashboard..." />;
 
     return (
-        <div className="space-y-6 fade-in">
+        <div className="space-y-8 fade-in pb-10">
             {/* Welcome */}
-            <header>
-                <h1 className="text-2xl font-bold">
+            <header className="mb-8">
+                <h1 className="text-3xl font-black mb-2 tracking-tight text-white drop-shadow-sm">
                     Welcome back, <span className="gradient-text">{user?.name}</span>
                 </h1>
-                <p className="text-[var(--color-text-muted)] text-sm mt-1">
-                    Here&apos;s your portfolio overview
+                <p className="text-[var(--color-primary-light)] font-medium text-sm lg:text-base opacity-90">
+                    Here&apos;s your daily portfolio overview and market performance.
                 </p>
             </header>
 
             {/* Portfolio Summary Cards */}
-            <PortfolioSummary
-                totalInvested={totalInvested}
-                totalCurrentValue={totalCurrentValue}
-                totalProfitLoss={totalProfitLoss}
-                availableBalance={user?.virtualBalance || availableBalance}
-            />
+            <div className="mb-8">
+                <PortfolioSummary
+                    totalInvested={totalInvested}
+                    totalCurrentValue={totalCurrentValue}
+                    totalProfitLoss={totalProfitLoss}
+                    availableBalance={user?.virtualBalance || availableBalance}
+                />
+            </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                 {/* Chart */}
-                <section className="glass-card p-6">
-                    <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                        <FiActivity className="text-[var(--color-primary)]" />
+                <section className="glass-card p-8 shadow-lg">
+                    <h2 className="text-xl font-black mb-6 flex items-center gap-3 text-white">
+                        <div className="p-2 bg-[var(--color-primary)] bg-opacity-20 rounded-lg">
+                            <FiActivity className="text-[var(--color-primary)]" size={20} />
+                        </div>
                         Market Trend
                     </h2>
-                    <div style={{ height: '250px' }}>
+                    <div style={{ height: '300px' }} className="w-full">
                         {chartData ? (
                             <Line data={chartData} options={chartOptions} />
                         ) : (
-                            <div className="flex items-center justify-center h-full text-[var(--color-text-muted)]">
-                                No chart data available
+                            <div className="flex items-center justify-center h-full text-[var(--color-text-muted)] font-medium">
+                                Gathering chart data...
                             </div>
                         )}
                     </div>
                 </section>
 
                 {/* Recent Transactions */}
-                <section className="glass-card p-6">
-                    <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                        <FiDollarSign className="text-[var(--color-accent)]" />
-                        Recent Transactions
-                    </h2>
-                    {transactions && transactions.length > 0 ? (
-                        <div className="space-y-3">
-                            {transactions.slice(0, 5).map((tx) => (
-                                <div key={tx._id} className="flex items-center justify-between py-2 border-b border-[var(--color-border)] last:border-0">
-                                    <div className="flex items-center gap-3">
-                                        <div
-                                            className="w-8 h-8 rounded-lg flex items-center justify-center"
-                                            style={{ background: tx.type === 'buy' ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)' }}
-                                        >
-                                            {tx.type === 'buy' ? (
-                                                <FiTrendingUp className="text-[var(--color-success)]" size={14} />
-                                            ) : (
-                                                <FiTrendingDown className="text-[var(--color-danger)]" size={14} />
-                                            )}
+                <section className="glass-card p-8 shadow-lg flex flex-col">
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-xl font-black flex items-center gap-3 text-white">
+                            <div className="p-2 bg-[var(--color-accent)] bg-opacity-20 rounded-lg">
+                                <FiDollarSign className="text-[var(--color-accent)]" size={20} />
+                            </div>
+                            Recent Activity
+                        </h2>
+                        {transactions && transactions.length > 0 && (
+                            <a href="/transactions" className="text-sm font-bold text-[var(--color-primary-light)] hover:text-white transition-colors">View All</a>
+                        )}
+                    </div>
+
+                    <div className="flex-1">
+                        {transactions && transactions.length > 0 ? (
+                            <div className="space-y-4">
+                                {transactions.slice(0, 5).map((tx) => (
+                                    <div key={tx._id} className="flex items-center justify-between p-4 rounded-xl bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.04)] transition-colors border border-[rgba(255,255,255,0.05)]">
+                                        <div className="flex items-center gap-4">
+                                            <div
+                                                className="w-10 h-10 rounded-xl flex items-center justify-center shadow-inner"
+                                                style={{ background: tx.type === 'buy' ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)' }}
+                                            >
+                                                {tx.type === 'buy' ? (
+                                                    <FiTrendingUp className="text-[var(--color-success)]" size={18} />
+                                                ) : (
+                                                    <FiTrendingDown className="text-[var(--color-danger)]" size={18} />
+                                                )}
+                                            </div>
+                                            <div>
+                                                <p className="text-base font-bold text-white tracking-tight">
+                                                    {tx.type === 'buy' ? 'Bought' : 'Sold'} {tx.symbol}
+                                                </p>
+                                                <p className="text-xs font-semibold text-[var(--color-text-muted)] mt-0.5">
+                                                    {tx.quantity} shares @ ${tx.priceAtExecution?.toFixed(2)}
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p className="text-sm font-medium">
-                                                {tx.type === 'buy' ? 'Bought' : 'Sold'} {tx.symbol}
-                                            </p>
-                                            <p className="text-xs text-[var(--color-text-muted)]">
-                                                {tx.quantity} shares @ ${tx.priceAtExecution?.toFixed(2)}
-                                            </p>
-                                        </div>
+                                        <span className={`text-base font-black tracking-tight ${tx.type === 'buy' ? 'text-[var(--color-danger)]' : 'text-[var(--color-success)]'}`}>
+                                            {tx.type === 'buy' ? '-' : '+'}${tx.totalAmount?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        </span>
                                     </div>
-                                    <span className={`text-sm font-semibold ${tx.type === 'buy' ? 'text-[var(--color-danger)]' : 'text-[var(--color-success)]'}`}>
-                                        {tx.type === 'buy' ? '-' : '+'}${tx.totalAmount?.toFixed(2)}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <p className="text-[var(--color-text-muted)] text-sm text-center py-8">
-                            No transactions yet. Start trading!
-                        </p>
-                    )}
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="flex flex-col items-center justify-center h-full py-12 text-center">
+                                <FiDollarSign size={48} className="text-[var(--color-text-muted)] opacity-20 mb-4" />
+                                <p className="text-[var(--color-text-secondary)] font-medium mb-2">No transactions yet.</p>
+                                <a href="/stocks" className="text-sm font-bold text-[var(--color-primary)] hover:text-white transition-colors">Start trading to see activity here!</a>
+                            </div>
+                        )}
+                    </div>
                 </section>
             </div>
 
-            {/* Top Movers */}
+            {/* Top Movers/Overview */}
             {stocks && stocks.length > 0 && (
-                <section className="glass-card p-6">
-                    <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                        <FiTrendingUp className="text-[var(--color-success)]" />
+                <section className="glass-card p-8 shadow-lg">
+                    <h2 className="text-xl font-black mb-6 flex items-center gap-3 text-white">
+                        <div className="p-2 bg-[var(--color-success)] bg-opacity-20 rounded-lg">
+                            <FiTrendingUp className="text-[var(--color-success)]" size={20} />
+                        </div>
                         Market Overview
                     </h2>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
                         {stocks.slice(0, 5).map((stock) => (
-                            <div key={stock._id} className="p-3 rounded-xl" style={{ backgroundColor: 'var(--color-bg-primary)' }}>
-                                <p className="text-sm font-bold text-[var(--color-primary-light)]">{stock.symbol}</p>
-                                <p className="text-lg font-bold mt-1">${stock.price?.toFixed(2)}</p>
-                                <span className={`text-xs font-semibold ${stock.change >= 0 ? 'text-[var(--color-success)]' : 'text-[var(--color-danger)]'}`}>
+                            <div key={stock._id} className="p-4 rounded-xl border border-[rgba(255,255,255,0.05)] hover:border-[var(--color-primary)] transition-all bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.04)] shadow-sm">
+                                <p className="text-sm font-black text-[var(--color-primary-light)] mb-1">{stock.symbol}</p>
+                                <p className="text-xl font-bold text-white mb-2">${stock.price?.toFixed(2)}</p>
+                                <div className={`inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-bold ${stock.change >= 0 ? 'bg-[rgba(16,185,129,0.15)] text-[var(--color-success)]' : 'bg-[rgba(239,68,68,0.15)] text-[var(--color-danger)]'}`}>
                                     {stock.change >= 0 ? '+' : ''}{stock.changePercent?.toFixed(2)}%
-                                </span>
+                                </div>
                             </div>
                         ))}
                     </div>

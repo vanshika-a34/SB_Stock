@@ -10,15 +10,24 @@ const Register = () => {
     const [formData, setFormData] = useState({ name: '', email: '', password: '' });
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { user, isLoading, isError, message } = useSelector((state) => state.auth);
+    const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth);
 
     useEffect(() => {
-        if (user) navigate('/');
+        if (user) {
+            navigate('/');
+        }
+
+        if (isSuccess) {
+            toast.success('Account created successfully. Please sign in to continue.');
+            dispatch(reset());
+            navigate('/login');
+        }
+
         if (isError && message) {
             toast.error(message);
             dispatch(reset());
         }
-    }, [user, isError, message, navigate, dispatch]);
+    }, [user, isSuccess, isError, message, navigate, dispatch]);
 
     const handleSubmit = (e) => {
         e.preventDefault();

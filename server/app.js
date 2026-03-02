@@ -26,13 +26,13 @@ app.use(
 );
 app.use(mongoSanitize());
 
-// Rate limiting for auth routes
+// Rate limiting for auth routes (relaxed for better UX while still protecting API)
 const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 15,
+    max: 100,
     message: {
         success: false,
-        message: 'Too many requests, please try again after 15 minutes',
+        message: 'Too many authentication attempts, please try again after 15 minutes',
     },
 });
 

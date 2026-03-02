@@ -1,4 +1,5 @@
 const Stock = require('../models/Stock');
+const { runSeed } = require('../seed');
 
 class StockService {
     async getAllStocks(query = {}) {
@@ -16,16 +17,22 @@ class StockService {
             ];
         }
 
+        let total = await Stock.countDocuments(filter);
+
+        // Auto-seed initial stocks if database is empty (useful for fresh setups)
+        if (total === 0) {
+            await runSeed();
+            total = await Stock.countDocuments(filter);
+        }
+
         const stocks = await Stock.find(filter)
             .sort({ symbol: 1 })
             .limit(limit * 1)
             .skip((page - 1) * limit);
 
-        const total = await Stock.countDocuments(filter);
-
         return {
             stocks,
-            totalPages: Math.ceil(total / limit),
+            totalPages: Math.ceil(total / limit) || 1,
             currentPage: Number(page),
             total,
         };

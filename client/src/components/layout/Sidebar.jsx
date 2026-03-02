@@ -24,19 +24,20 @@ const Sidebar = () => {
     }
 
     const linkClass = ({ isActive }) =>
-        `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all no-underline ${isActive
-            ? 'text-white'
-            : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-hover)]'
+        `flex items-center gap-4 px-5 py-3.5 rounded-xl text-sm font-bold transition-all no-underline mb-2 ${isActive
+            ? 'text-white shadow-lg'
+            : 'text-[var(--color-text-muted)] hover:text-white hover:bg-[rgba(255,255,255,0.05)]'
         }`;
 
     const linkStyle = (isActive) =>
         isActive
-            ? { background: 'linear-gradient(135deg, rgba(99,102,241,0.2), rgba(34,211,238,0.1))', borderLeft: '3px solid var(--color-primary)' }
-            : {};
+            ? { background: 'linear-gradient(135deg, rgba(99,102,241,0.25), rgba(34,211,238,0.15))', borderLeft: '4px solid var(--color-primary)' }
+            : { borderLeft: '4px solid transparent' };
 
     return (
-        <aside className="hidden lg:flex flex-col w-60 min-h-[calc(100vh-57px)] border-r border-[var(--color-border)] p-4" style={{ backgroundColor: 'var(--color-bg-secondary)' }}>
-            <nav className="flex flex-col gap-1 flex-1">
+        <aside className="hidden lg:flex flex-col w-64 min-h-[calc(100vh-72px)] border-r border-[var(--color-border)] p-6" style={{ backgroundColor: 'rgba(11, 15, 25, 0.4)', backdropFilter: 'blur(12px)' }}>
+            <nav className="flex flex-col flex-1 mt-2">
+                <p className="text-[10px] font-black uppercase text-[var(--color-text-muted)] tracking-widest pl-2 mb-4">Menu</p>
                 {navItems.map(({ to, icon: Icon, label }) => (
                     <NavLink
                         key={to}
@@ -45,19 +46,20 @@ const Sidebar = () => {
                         style={({ isActive }) => linkStyle(isActive)}
                         end={to === '/'}
                     >
-                        <Icon size={18} />
+                        <Icon size={20} className={({ isActive }) => (isActive ? 'text-[var(--color-secondary)]' : '')} />
                         <span>{label}</span>
                     </NavLink>
                 ))}
             </nav>
 
-            <div className="glass-card p-4 mt-4">
-                <div className="flex items-center gap-2 mb-2">
-                    <div className="w-2 h-2 rounded-full bg-[var(--color-success)] pulse-dot" />
-                    <span className="text-xs text-[var(--color-text-muted)]">Market Status</span>
+            <div className="glass-card p-5 mt-6 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-20 h-20 bg-[var(--color-success)] rounded-full blur-[40px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                <div className="flex items-center gap-2.5 mb-3 relative z-10">
+                    <div className="w-2.5 h-2.5 rounded-full bg-[var(--color-success)] pulse-dot shadow-[0_0_8px_var(--color-success)]" />
+                    <span className="text-xs uppercase font-bold tracking-wider text-[var(--color-text-muted)]">System Status</span>
                 </div>
-                <p className="text-sm font-semibold text-[var(--color-success)]">Simulation Active</p>
-                <p className="text-xs text-[var(--color-text-muted)] mt-1">Trade with virtual funds</p>
+                <p className="text-base font-black text-white relative z-10">Simulation Active</p>
+                <p className="text-xs font-medium text-[var(--color-primary-light)] mt-1.5 relative z-10">Markets are open</p>
             </div>
         </aside>
     );
