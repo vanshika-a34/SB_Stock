@@ -21,11 +21,11 @@ const Portfolio = () => {
     if (isLoading) return <Loader text="Loading portfolio..." />;
 
     return (
-        <div className="space-y-6 fade-in">
-            <header>
-                <h1 className="text-2xl font-bold">My Portfolio</h1>
-                <p className="text-[var(--color-text-muted)] text-sm mt-1">
-                    Track your investments and performance
+        <div className="space-y-8 fade-in pb-10">
+            <header className="mb-2">
+                <h1 className="text-3xl font-black mb-1 tracking-tight text-white">My Portfolio</h1>
+                <p className="text-[var(--color-text-muted)] text-sm lg:text-base">
+                    Track your investments, exposure and overall performance.
                 </p>
             </header>
 
@@ -38,8 +38,8 @@ const Portfolio = () => {
             />
 
             {/* Holdings */}
-            <section>
-                <h2 className="text-lg font-semibold mb-4">Holdings</h2>
+            <section className="space-y-4">
+                <h2 className="text-lg font-semibold text-white">Holdings</h2>
                 <HoldingsTable holdings={holdings} />
             </section>
         </div>
